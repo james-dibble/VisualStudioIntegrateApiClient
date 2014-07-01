@@ -1,6 +1,7 @@
 ﻿namespace VisualStudioIntegreate.Client
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// An object that represents information regarding the parent application
@@ -16,6 +17,12 @@
 
         public Uri AccessTokenUrl { get; set; }
 
-        public string AuthorizedScopes { get; set; }
+        /// <summary>
+        /// Gets or sets the <see cref="System.Uri"/> for the authorzation process
+        /// to return to with an authorization code.
+        /// </summary>
+        public Uri CallbackUri { get; set; }
+
+        public IEnumerable<string> AuthorizedScopes { get; set; }
     }
 }
