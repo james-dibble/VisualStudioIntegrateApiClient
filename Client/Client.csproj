@@ -42,7 +42,10 @@
     <StyleCopTreatErrorsAsWarnings>False</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ConsumerApplication.cs" />
+    <Compile Include="IVisualStudioIntegrateClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStudioIntegrateClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
@@ -60,6 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authentication\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
