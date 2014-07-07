@@ -25,7 +25,7 @@
                 CallbackUri = new Uri("http://somewhere.com")
             };
 
-            var target = new AuthenticationClient(fakeApplication, new RestClient());
+            var target = new AuthenticationClient(fakeApplication, new RestClient(null));
 
             var actual = target.CreateAuthorizeUri(string.Empty);
 
@@ -37,7 +37,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task TestGetAccessTokenEmptyAuthCode()
         {
-            var target = new AuthenticationClient(new ConsumerApplication(), new RestClient());
+            var target = new AuthenticationClient(new ConsumerApplication(), new RestClient(null));
 
             await target.GetAccessTokenAsync(string.Empty);
         }
@@ -67,7 +67,7 @@
                 .Setup(x => x.ExecuteRequestAsync<AccessTokenDto>(It.IsAny<HttpRequestMessage>()))
                 .Returns(Task.Run(() => new AccessTokenDto()));
 
-            var fakeToken = new AccessToken();
+            var fakeToken = new AccessToken(string.Empty, DateTime.Now.AddSeconds(500), new Uri("http://somewhere.com"), "Drew Peacock");
 
             var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
 
