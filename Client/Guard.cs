@@ -16,7 +16,7 @@
         /// <param name="message">
         /// The message to put into the <see cref="System.ArgumentNullException"/> if it does not pass.
         /// </param>
-        public static void IsNotNull<T>(this T argument, string argumentName, string message) where T : class
+        public static void IsNotNull<T>(T argument, string argumentName, string message) where T : class
         {
             if (argument == null)
             {
@@ -34,7 +34,7 @@
         /// <param name="message">
         /// The message to put into the <see cref="System.ArgumentException"/> if it does not pass.
         /// </param>
-        public static void IsNot<T>(this T argument, Func<T, bool> vaidationExpression, string argumentName, string message)
+        public static void IsNot<T>(T argument, Func<T, bool> vaidationExpression, string argumentName, string message)
         {
             if (!vaidationExpression(argument))
             {

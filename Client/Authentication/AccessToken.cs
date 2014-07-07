@@ -5,10 +5,10 @@
     /// <summary>
     /// A value object for storing information required to access the API using an identity.
     /// </summary>
-    public struct AccessToken
+    public class AccessToken
     {
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccessToken"/> struct.
+        /// Initialises a new instance of the <see cref="AccessToken"/> class.
         /// </summary>
         /// <param name="token">The token.</param>
         /// <param name="expiresIn">The number of seconds until the <paramref name="token"/> expires.</param>
@@ -20,14 +20,13 @@
         }
 
         /// <summary>
-        /// Initialises a new instance of the <see cref="AccessToken"/> struct.
+        /// Initialises a new instance of the <see cref="AccessToken"/> class.
         /// </summary>
         /// <param name="token">The token.</param>
         /// <param name="expires">The <see cref="System.DateTime"/> the <paramref name="token"/> expires.</param>
         /// <param name="refreshUri">The refresh <see cref="System.Uri"/>.</param>
         /// <param name="refreshToken">The refresh token.</param>
         public AccessToken(string token, DateTime expires, Uri refreshUri, string refreshToken)
-            : this()
         {
             this.Token = token;
             this.Expires = expires;

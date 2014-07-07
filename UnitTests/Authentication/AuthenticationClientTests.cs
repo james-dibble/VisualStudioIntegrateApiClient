@@ -2,8 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net.Http;
     using System.Threading.Tasks;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
     using VisualStudioIntegreate.Client;
     using VisualStudioIntegreate.Client.Authentication;
 
@@ -23,7 +25,7 @@
                 CallbackUri = new Uri("http://somewhere.com")
             };
 
-            var target = new AuthenticationClient(fakeApplication);
+            var target = new AuthenticationClient(fakeApplication, new RestClient());
 
             var actual = target.CreateAuthorizeUri(string.Empty);
 
@@ -35,7 +37,7 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task TestGetAccessTokenEmptyAuthCode()
         {
-            var target = new AuthenticationClient(new ConsumerApplication());
+            var target = new AuthenticationClient(new ConsumerApplication(), new RestClient());
 
             await target.GetAccessToken(string.Empty);
         }
@@ -43,7 +45,13 @@
         [TestMethod]
         public async Task TestGetAccessToken()
         {
-            var target = new AuthenticationClient(new ConsumerApplication());
+            var fakeClient = new Mock<IRestClient>();
+
+            fakeClient
+                .Setup(x => x.ExecuteRequestAsync<AccessTokenDto>(It.IsAny<HttpRequestMessage>()))
+                .Returns(Task.Run(() => new AccessTokenDto()));
+
+            var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
 
             var actual = await target.GetAccessToken("any string");
 

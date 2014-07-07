@@ -49,6 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Authentication\AccessToken.cs" />
+    <Compile Include="Authentication\AccessTokenDto.cs" />
     <Compile Include="Authentication\AuthenticationClient.cs" />
     <Compile Include="Authentication\IAuthenticationClient.cs" />
     <Compile Include="ConsumerApplication.cs" />

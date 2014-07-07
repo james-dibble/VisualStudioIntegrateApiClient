@@ -9,6 +9,7 @@
     public class VisualStudioIntegrateClient : IVisualStudioIntegrateClient
     {
         private readonly ConsumerApplication _consumerApplication;
+        private readonly IRestClient _restClient;
         private readonly Lazy<IAuthenticationClient> _authenticationClientInitializer; 
 
         /// <summary>
@@ -17,10 +18,13 @@
         /// <param name="applicationIdentity">The consumer application information.</param>
         public VisualStudioIntegrateClient(ConsumerApplication applicationIdentity)
         {
-            applicationIdentity.IsNotNull("applicationIdentity", "A VisualStudioIntegrateClient must have an application idenity to relay to the API.");
+            Guard.IsNotNull(applicationIdentity, "applicationIdentity", "A VisualStudioIntegrateClient must have an application idenity to relay to the API.");
 
             this._consumerApplication = applicationIdentity;
-            this._authenticationClientInitializer = new Lazy<IAuthenticationClient>(() => new AuthenticationClient(this._consumerApplication));
+            this._restClient = new RestClient();
+
+            this._authenticationClientInitializer = new Lazy<IAuthenticationClient>(
+                () => new AuthenticationClient(this._consumerApplication, this._restClient));
         }
 
         /// <summary>
