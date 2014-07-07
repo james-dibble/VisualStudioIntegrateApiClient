@@ -2,6 +2,7 @@
 {
     using System;
     using System.Globalization;
+    using System.Net.Http;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -10,16 +11,20 @@
     public class AuthenticationClient : IAuthenticationClient
     {
         private readonly ConsumerApplication _consumerApplication;
+        private readonly IRestClient _restClient;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AuthenticationClient"/> class.
         /// </summary>
         /// <param name="applicationIdentity">Authentication information for the parent application.</param>
-        public AuthenticationClient(ConsumerApplication applicationIdentity)
+        /// <param name="restClient">The <see cref="IRestClient"/> instance for accessing the API.</param>
+        public AuthenticationClient(ConsumerApplication applicationIdentity, IRestClient restClient)
         {
-            applicationIdentity.IsNotNull("applicationIdentity", "An authentication client must have an application identity.");
+            Guard.IsNotNull(applicationIdentity, "applicationIdentity", "An authentication client must have an application identity.");
+            Guard.IsNotNull(restClient, "restClient", "An authentication client requires an IRestClient.");
 
             this._consumerApplication = applicationIdentity;
+            this._restClient = restClient;
         }
 
         /// <summary>
@@ -56,9 +61,27 @@
         /// </summary>
         /// <param name="authorizationCode">The authorisation code to create an <see cref="AccessToken"/> with.</param>
         /// <returns>A populated <see cref="AccessToken"/>.</returns>
-        public Task<AccessToken> GetAccessToken(string authorizationCode)
+        public async Task<AccessToken> GetAccessToken(string authorizationCode)
         {
-            throw new NotImplementedException();
+            Guard.IsNot(
+                authorizationCode, 
+                code => !string.IsNullOrEmpty(code), 
+                "authorizationCode", 
+                "To get an access token an authorization code must be supplied.");
+
+            var request = new HttpRequestMessage(
+                HttpMethod.Post,
+                this._consumerApplication.AccessTokenUrl);
+
+            var response = await this._restClient.ExecuteRequestAsync<AccessTokenDto>(request);
+
+            var token = new AccessToken(
+                response.AccessToken, 
+                response.ExpiresIn,
+                this._consumerApplication.AccessTokenUrl, 
+                response.RefreshToken);
+
+            return token;
         }
     }
 }
