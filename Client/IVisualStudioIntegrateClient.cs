@@ -8,6 +8,9 @@
     /// </summary>
     public interface IVisualStudioIntegrateClient
     {
+        /// <summary>
+        /// Gets methods for Authenticating with the VSO REST API using an identity.
+        /// </summary>
         IAuthenticationClient Authentication { get; }
     }
 }

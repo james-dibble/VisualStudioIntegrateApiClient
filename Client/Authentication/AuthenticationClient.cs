@@ -11,6 +11,10 @@
     {
         private readonly ConsumerApplication _consumerApplication;
 
+        /// <summary>
+        /// Initialises a new instance of the <see cref="AuthenticationClient"/> class.
+        /// </summary>
+        /// <param name="applicationIdentity">Authentication information for the parent application.</param>
         public AuthenticationClient(ConsumerApplication applicationIdentity)
         {
             Guard.IsNotNull(
@@ -30,15 +34,15 @@
         /// Authentication state information to pass into the redirect <see cref="System.Uri"/>.
         /// </param>
         /// <returns>
-        /// A fully formed <see cref="System.Uri"/> to rediect too to gain an Access Token.
+        /// A fully formed <see cref="System.Uri"/> to redirect too to gain an Access Token.
         /// </returns>
         public Uri CreateAuthorizeUri(string state)
         {
-            const string getParamertsFormat = @"?client_id={0}&response_type=Assertion&state={1}&scope={2}&redirect_uri={3}";
+            const string GetParamertsFormat = @"?client_id={0}&response_type=Assertion&state={1}&scope={2}&redirect_uri={3}";
 
             var populatedGetParameters = string.Format(
                 CultureInfo.InvariantCulture,
-                getParamertsFormat,
+                GetParamertsFormat,
                 this._consumerApplication.ApplicationId,
                 state,
                 string.Join(" ", this._consumerApplication.AuthorizedScopes),
@@ -50,12 +54,12 @@
         }
 
         /// <summary>
-        /// From a callback <paramref name="authorizationCode"/>, retrieve an
+        /// From a call-back <paramref name="authorizationCode"/>, retrieve an
         /// <see cref="AccessToken"/> to query the API with.
         /// </summary>
-        /// <param name="authorizationCode">The auth code to create an <see cref="AccessToken"/> with.</param>
+        /// <param name="authorizationCode">The authorisation code to create an <see cref="AccessToken"/> with.</param>
         /// <returns>A populated <see cref="AccessToken"/>.</returns>
-        public async Task<AccessToken> GetAccessToken(string authorizationCode)
+        public Task<AccessToken> GetAccessToken(string authorizationCode)
         {
             throw new NotImplementedException();
         }

@@ -12,7 +12,7 @@
         private readonly Lazy<IAuthenticationClient> _authenticationClientInitializer; 
 
         /// <summary>
-        /// Create a new instance of the <see cref="VisualStudioIntegrateClient"/> class.
+        /// Initialises a new instance of the <see cref="VisualStudioIntegrateClient"/> class.
         /// </summary>
         /// <param name="applicationIdentity">The consumer application information.</param>
         public VisualStudioIntegrateClient(ConsumerApplication applicationIdentity)
@@ -21,6 +21,9 @@
             this._authenticationClientInitializer = new Lazy<IAuthenticationClient>(() => new AuthenticationClient(this._consumerApplication));
         }
 
+        /// <summary>
+        /// Gets methods for Authenticating with the VSO REST API using an identity.
+        /// </summary>
         public IAuthenticationClient Authentication
         {
             get { return this._authenticationClientInitializer.Value; }
