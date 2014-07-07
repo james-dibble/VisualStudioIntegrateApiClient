@@ -28,6 +28,13 @@
         /// </summary>
         /// <param name="authorizationCode">The authorisation code to create an <see cref="AccessToken"/> with.</param>
         /// <returns>A populated <see cref="AccessToken"/>.</returns>
-        Task<AccessToken> GetAccessToken(string authorizationCode);
+        Task<AccessToken> GetAccessTokenAsync(string authorizationCode);
+
+        /// <summary>
+        /// Update the access code for an expired <see cref="AccessToken"/>.
+        /// </summary>
+        /// <param name="currentToken">The current identity information.</param>
+        /// <returns>A new <see cref="AccessToken"/>.</returns>
+        Task<AccessToken> RefreshAccessTokenAsync(AccessToken currentToken);
     }
 }

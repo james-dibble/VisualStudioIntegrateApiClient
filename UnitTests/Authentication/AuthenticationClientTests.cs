@@ -39,7 +39,7 @@
         {
             var target = new AuthenticationClient(new ConsumerApplication(), new RestClient());
 
-            await target.GetAccessToken(string.Empty);
+            await target.GetAccessTokenAsync(string.Empty);
         }
 
         [TestMethod]
@@ -53,9 +53,27 @@
 
             var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
 
-            var actual = await target.GetAccessToken("any string");
+            var actual = await target.GetAccessTokenAsync("any string");
 
             Assert.IsNotNull(actual);
+        }
+
+        [TestMethod]
+        public async Task TestRefreshAccessToken()
+        {
+            var fakeClient = new Mock<IRestClient>();
+
+            fakeClient
+                .Setup(x => x.ExecuteRequestAsync<AccessTokenDto>(It.IsAny<HttpRequestMessage>()))
+                .Returns(Task.Run(() => new AccessTokenDto()));
+
+            var fakeToken = new AccessToken();
+
+            var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
+
+            var actual = await target.RefreshAccessTokenAsync(fakeToken);
+
+            Assert.AreNotEqual(fakeToken, actual);
         }
     }
 }

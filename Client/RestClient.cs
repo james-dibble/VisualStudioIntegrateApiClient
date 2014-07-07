@@ -9,6 +9,17 @@
     /// </summary>
     public class RestClient : IRestClient
     {
+        private readonly ConsumerApplication _consumerApplication;
+
+        /// <summary>
+        /// Initialises a new instance of the <see cref="RestClient"/> class.
+        /// </summary>
+        /// <param name="consumerApplication">The parent application information.</param>
+        public RestClient(ConsumerApplication consumerApplication)
+        {
+            this._consumerApplication = consumerApplication;
+        }
+
         /// <summary>
         /// Perform a request upon the API.
         /// </summary>
@@ -17,6 +28,9 @@
         public async Task<HttpResponseMessage> ExecuteRequestAsync(HttpRequestMessage request)
         {
             Guard.IsNotNull(request, "request", "The request to be sent cannot be null.");
+
+            request.Properties.Add("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer");
+            request.Properties.Add("client_assertion", this._consumerApplication.ApplicationSecret);
 
             using (var client = new HttpClient())
             {
