@@ -17,10 +17,7 @@
         /// <param name="applicationIdentity">Authentication information for the parent application.</param>
         public AuthenticationClient(ConsumerApplication applicationIdentity)
         {
-            Guard.IsNotNull(
-                applicationIdentity, 
-                "applicationIdentity", 
-                "An authentication client must have an application identity.");
+            applicationIdentity.IsNotNull("applicationIdentity", "An authentication client must have an application identity.");
 
             this._consumerApplication = applicationIdentity;
         }

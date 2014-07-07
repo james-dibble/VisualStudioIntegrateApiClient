@@ -17,6 +17,8 @@
         /// <param name="applicationIdentity">The consumer application information.</param>
         public VisualStudioIntegrateClient(ConsumerApplication applicationIdentity)
         {
+            applicationIdentity.IsNotNull("applicationIdentity", "A VisualStudioIntegrateClient must have an application idenity to relay to the API.");
+
             this._consumerApplication = applicationIdentity;
             this._authenticationClientInitializer = new Lazy<IAuthenticationClient>(() => new AuthenticationClient(this._consumerApplication));
         }
