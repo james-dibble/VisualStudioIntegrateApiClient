@@ -1,7 +1,9 @@
 VisualStudioIntegrateApiClient
 ==============================
 
-A .Net Wrapper for the Visual Studio Integrate REST Api
+A .Net Wrapper for the [Visual Studio Integrate REST Api](http://www.visualstudio.com/en-us/integrate/)
+
+Currently nothing useful has been developed but a Nuget package is in the works.
 
 Continuous Integration
 ----------------------
