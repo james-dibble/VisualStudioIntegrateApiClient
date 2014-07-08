@@ -1,5 +1,6 @@
 ﻿namespace VisualStudioIntegreate.Client.Profile
 {
+    using System;
     using System.Net.Http;
     using System.Threading.Tasks;
 
@@ -15,7 +16,11 @@
         /// <returns>The profile information for the given authentication context.</returns>
         public async Task<Profile> GetAuthenticatedClientProfileAsync(IAuthenticatedVisualStudioIntegrateContext context)
         {
-            var request = new AuthenticatedRequest<Profile> { Method = HttpMethod.Get };
+            var request = new AuthenticatedRequest<Profile>
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://app.vssps.visualstudio.com/_apis/profile/profiles/me")
+            };
 
             var response = await context.ExecuteAsync(request);
 
