@@ -25,7 +25,7 @@
                 CallbackUri = new Uri("http://somewhere.com")
             };
 
-            var target = new AuthenticationClient(fakeApplication, new RestClient(null));
+            var target = new AuthenticationClient(fakeApplication);
 
             var actual = target.CreateAuthorizeUri(string.Empty);
 
@@ -37,23 +37,23 @@
         [ExpectedException(typeof(ArgumentException))]
         public async Task TestGetAccessTokenEmptyAuthCode()
         {
-            var target = new AuthenticationClient(new ConsumerApplication(), new RestClient(null));
+            var target = new AuthenticationClient(new ConsumerApplication());
 
-            await target.GetAccessTokenAsync(string.Empty);
+            await target.GetAccessTokenAsync(null, string.Empty);
         }
 
         [TestMethod]
         public async Task TestGetAccessToken()
         {
-            var fakeClient = new Mock<IRestClient>();
+            var fakeContext = new Mock<IVisualStudioIntegrateContext>();
 
-            fakeClient
-                .Setup(x => x.ExecuteRequestAsync<AccessTokenDto>(It.IsAny<HttpRequestMessage>()))
+            fakeContext
+                .Setup(x => x.ExecuteAsync(It.IsAny<Request<AccessTokenDto>>()))
                 .Returns(Task.Run(() => new AccessTokenDto()));
 
-            var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
+            var target = new AuthenticationClient(new ConsumerApplication());
 
-            var actual = await target.GetAccessTokenAsync("any string");
+            var actual = await target.GetAccessTokenAsync(fakeContext.Object, "any string");
 
             Assert.IsNotNull(actual);
         }
@@ -61,17 +61,17 @@
         [TestMethod]
         public async Task TestRefreshAccessToken()
         {
-            var fakeClient = new Mock<IRestClient>();
+            var fakeContext = new Mock<IVisualStudioIntegrateContext>();
 
-            fakeClient
-                .Setup(x => x.ExecuteRequestAsync<AccessTokenDto>(It.IsAny<HttpRequestMessage>()))
+            fakeContext
+                .Setup(x => x.ExecuteAsync(It.IsAny<Request<AccessTokenDto>>()))
                 .Returns(Task.Run(() => new AccessTokenDto()));
 
             var fakeToken = new AccessToken(string.Empty, DateTime.Now.AddSeconds(500), new Uri("http://somewhere.com"), "Drew Peacock");
 
-            var target = new AuthenticationClient(new ConsumerApplication(), fakeClient.Object);
+            var target = new AuthenticationClient(new ConsumerApplication());
 
-            var actual = await target.RefreshAccessTokenAsync(fakeToken);
+            var actual = await target.RefreshAccessTokenAsync(fakeContext.Object, fakeToken);
 
             Assert.AreNotEqual(fakeToken, actual);
         }

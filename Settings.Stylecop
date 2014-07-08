@@ -9,6 +9,7 @@
       <Value>eg</Value>
       <Value>OAuth</Value>
       <Value>Auth</Value>
+      <Value>awaitable</Value>
     </CollectionProperty>
   </GlobalSettings>
   <Parsers>

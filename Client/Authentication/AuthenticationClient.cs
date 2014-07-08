@@ -11,20 +11,16 @@
     public class AuthenticationClient : IAuthenticationClient
     {
         private readonly ConsumerApplication _consumerApplication;
-        private readonly IRestClient _restClient;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="AuthenticationClient"/> class.
         /// </summary>
         /// <param name="applicationIdentity">Authentication information for the parent application.</param>
-        /// <param name="restClient">The <see cref="IRestClient"/> instance for accessing the API.</param>
-        public AuthenticationClient(ConsumerApplication applicationIdentity, IRestClient restClient)
+        public AuthenticationClient(ConsumerApplication applicationIdentity)
         {
             Guard.IsNotNull(applicationIdentity, "applicationIdentity", "An authentication client must have an application identity.");
-            Guard.IsNotNull(restClient, "restClient", "An authentication client requires an IRestClient.");
 
             this._consumerApplication = applicationIdentity;
-            this._restClient = restClient;
         }
 
         /// <summary>
@@ -59,30 +55,29 @@
         /// From a call-back <paramref name="authorizationCode"/>, retrieve an
         /// <see cref="AccessToken"/> to query the API with.
         /// </summary>
+        /// <param name="context">The context in which to execute the request.</param>
         /// <param name="authorizationCode">The authorisation code to create an <see cref="AccessToken"/> with.</param>
         /// <returns>A populated <see cref="AccessToken"/>.</returns>
-        public async Task<AccessToken> GetAccessTokenAsync(string authorizationCode)
+        public async Task<AccessToken> GetAccessTokenAsync(IVisualStudioIntegrateContext context, string authorizationCode)
         {
             Guard.IsNot(
-                authorizationCode, 
-                code => !string.IsNullOrEmpty(code), 
-                "authorizationCode", 
+                authorizationCode,
+                code => !string.IsNullOrEmpty(code),
+                "authorizationCode",
                 "To get an access token an authorization code must be supplied.");
 
-            var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                this._consumerApplication.AccessTokenUrl);
+            var request = new Request<AccessTokenDto> { Method = HttpMethod.Post, RequestUri = this._consumerApplication.AccessTokenUrl };
 
             request.Properties.Add("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
             request.Properties.Add("assertion", authorizationCode);
             request.Properties.Add("redirect_uri", this._consumerApplication.CallbackUri);
 
-            var response = await this._restClient.ExecuteRequestAsync<AccessTokenDto>(request);
+            var response = await context.ExecuteAsync(request);
 
             var token = new AccessToken(
-                response.AccessToken, 
+                response.AccessToken,
                 response.ExpiresIn,
-                this._consumerApplication.AccessTokenUrl, 
+                this._consumerApplication.AccessTokenUrl,
                 response.RefreshToken);
 
             return token;
@@ -91,19 +86,18 @@
         /// <summary>
         /// Update the access code for an expired <see cref="AccessToken"/>.
         /// </summary>
+        /// <param name="context">The context in which to execute the request.</param>
         /// <param name="currentToken">The current identity information.</param>
         /// <returns>A new <see cref="AccessToken"/>.</returns>
-        public async Task<AccessToken> RefreshAccessTokenAsync(AccessToken currentToken)
+        public async Task<AccessToken> RefreshAccessTokenAsync(IVisualStudioIntegrateContext context, AccessToken currentToken)
         {
-            var request = new HttpRequestMessage(
-                HttpMethod.Post,
-                this._consumerApplication.AccessTokenUrl);
+            var request = new Request<AccessTokenDto> { Method = HttpMethod.Post, RequestUri = this._consumerApplication.AccessTokenUrl };
 
             request.Properties.Add("grant_type", "refresh_token");
             request.Properties.Add("assertion", currentToken.RefreshToken);
             request.Properties.Add("redirect_uri", this._consumerApplication.CallbackUri);
 
-            var response = await this._restClient.ExecuteRequestAsync<AccessTokenDto>(request);
+            var response = await context.ExecuteAsync(request);
 
             var refreshedToken = new AccessToken(
                 response.AccessToken,
