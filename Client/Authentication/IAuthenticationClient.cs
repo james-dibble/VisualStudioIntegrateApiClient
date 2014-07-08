@@ -26,15 +26,17 @@
         /// From a call-back <paramref name="authorizationCode"/>, retrieve an
         /// <see cref="AccessToken"/> to query the API with.
         /// </summary>
+        /// <param name="context">The context in which to execute the request.</param>
         /// <param name="authorizationCode">The authorisation code to create an <see cref="AccessToken"/> with.</param>
         /// <returns>A populated <see cref="AccessToken"/>.</returns>
-        Task<AccessToken> GetAccessTokenAsync(string authorizationCode);
+        Task<AccessToken> GetAccessTokenAsync(IVisualStudioIntegrateContext context, string authorizationCode);
 
         /// <summary>
         /// Update the access code for an expired <see cref="AccessToken"/>.
         /// </summary>
+        /// <param name="context">The context in which to execute the request.</param>
         /// <param name="currentToken">The current identity information.</param>
         /// <returns>A new <see cref="AccessToken"/>.</returns>
-        Task<AccessToken> RefreshAccessTokenAsync(AccessToken currentToken);
+        Task<AccessToken> RefreshAccessTokenAsync(IVisualStudioIntegrateContext context, AccessToken currentToken);
     }
 }
