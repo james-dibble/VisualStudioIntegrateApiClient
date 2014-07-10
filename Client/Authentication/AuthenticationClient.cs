@@ -1,6 +1,7 @@
 ﻿namespace VisualStudioIntegreate.Client.Authentication
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -66,11 +67,19 @@
                 "authorizationCode",
                 "To get an access token an authorization code must be supplied.");
 
-            var request = new Request<AccessTokenDto> { Method = HttpMethod.Post, RequestUri = this._consumerApplication.AccessTokenUrl };
-
-            request.Properties.Add("grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer");
-            request.Properties.Add("assertion", authorizationCode);
-            request.Properties.Add("redirect_uri", this._consumerApplication.CallbackUri);
+            var request = new Request<AccessTokenDto>
+            {
+                Method = HttpMethod.Post,
+                RequestUri = this._consumerApplication.AccessTokenUrl,
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer" },
+                    { "assertion", authorizationCode },
+                    { "redirect_uri", this._consumerApplication.CallbackUri.AbsoluteUri },
+                    { "client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" },
+                    { "client_assertion", this._consumerApplication.ApplicationSecret }
+                })
+            };
 
             var response = await context.ExecuteAsync(request);
 
@@ -91,11 +100,19 @@
         /// <returns>A new <see cref="AccessToken"/>.</returns>
         public async Task<AccessToken> RefreshAccessTokenAsync(IVisualStudioIntegrateContext context, AccessToken currentToken)
         {
-            var request = new Request<AccessTokenDto> { Method = HttpMethod.Post, RequestUri = this._consumerApplication.AccessTokenUrl };
-
-            request.Properties.Add("grant_type", "refresh_token");
-            request.Properties.Add("assertion", currentToken.RefreshToken);
-            request.Properties.Add("redirect_uri", this._consumerApplication.CallbackUri);
+            var request = new Request<AccessTokenDto>
+            {
+                Method = HttpMethod.Post,
+                RequestUri = this._consumerApplication.AccessTokenUrl,
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "grant_type", "refresh_token" },
+                    { "assertion", currentToken.RefreshToken },
+                    { "redirect_uri", this._consumerApplication.CallbackUri.AbsoluteUri },
+                    { "client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer" },
+                    { "client_assertion", this._consumerApplication.ApplicationSecret }
+                })
+            };
 
             var response = await context.ExecuteAsync(request);
 
