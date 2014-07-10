@@ -1,6 +1,7 @@
 ﻿namespace VisualStudioIntegreate.Client
 {
     using VisualStudioIntegreate.Client.Authentication;
+    using VisualStudioIntegreate.Client.Profile;
 
     /// <summary>
     /// Implementing classes define methods for interacting with the 
@@ -12,5 +13,10 @@
         /// Gets methods for Authenticating with the VSO REST API using an identity.
         /// </summary>
         IAuthenticationClient Authentication { get; }
+
+        /// <summary>
+        /// Gets methods for retrieving profile information.
+        /// </summary>
+        IProfileClient Profile { get; }
     }
 }

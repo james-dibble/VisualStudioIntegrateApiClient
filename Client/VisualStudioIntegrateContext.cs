@@ -1,10 +1,12 @@
 ﻿namespace VisualStudioIntegreate.Client
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Threading.Tasks;
 
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// An execution context for queries against the VSOI API.
@@ -69,7 +71,9 @@
         {
             response = response.EnsureSuccessStatusCode();
 
-            var parsed = JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync());
+            var content = await response.Content.ReadAsStringAsync();
+
+            var parsed = JsonConvert.DeserializeObject<T>(content);
 
             return parsed;
         }
