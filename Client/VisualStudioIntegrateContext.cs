@@ -32,10 +32,7 @@
         public async Task<HttpResponseMessage> ExecuteAsync(Request request)
         {
             Guard.IsNotNull(request, "request", "The request to be sent cannot be null.");
-
-            request.Properties.Add("client_assertion_type", "urn:ietf:params:oauth:client-assertion-type:jwt-bearer");
-            request.Properties.Add("client_assertion", this._consumerApplication.ApplicationSecret);
-
+            
             return await this._httpClient.SendAsync(request);
         }
 

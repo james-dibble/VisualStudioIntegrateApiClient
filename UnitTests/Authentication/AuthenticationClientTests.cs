@@ -51,7 +51,11 @@
                 .Setup(x => x.ExecuteAsync(It.IsAny<Request<AccessTokenDto>>()))
                 .Returns(Task.Run(() => new AccessTokenDto()));
 
-            var target = new AuthenticationClient(new ConsumerApplication());
+            var target = new AuthenticationClient(new ConsumerApplication
+            {
+                AccessTokenUrl = new Uri("http://somewhere.com"),
+                CallbackUri = new Uri("http://somewhere.com")
+            });
 
             var actual = await target.GetAccessTokenAsync(fakeContext.Object, "any string");
 
@@ -69,7 +73,11 @@
 
             var fakeToken = new AccessToken(string.Empty, DateTime.Now.AddSeconds(500), new Uri("http://somewhere.com"), "Drew Peacock");
 
-            var target = new AuthenticationClient(new ConsumerApplication());
+            var target = new AuthenticationClient(new ConsumerApplication
+            {
+                AccessTokenUrl = new Uri("http://somewhere.com"),
+                CallbackUri = new Uri("http://somewhere.com")
+            });
 
             var actual = await target.RefreshAccessTokenAsync(fakeContext.Object, fakeToken);
 
