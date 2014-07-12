@@ -1,4 +1,4 @@
-﻿namespace VisualStudioIntegreate.Client.Profile
+﻿namespace VisualStudioIntegreate.Client.Project
 {
     using System;
     using System.Net.Http;

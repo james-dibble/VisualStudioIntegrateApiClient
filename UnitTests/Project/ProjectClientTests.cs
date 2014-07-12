@@ -6,7 +6,6 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VisualStudioIntegreate.Client;
-    using VisualStudioIntegreate.Client.Profile;
     using VisualStudioIntegreate.Client.Project;
 
     [TestClass]
@@ -35,21 +34,21 @@
         [TestMethod]
         public async Task TestGetAuthenicatedClientsProjects()
         {
-            var fakeProfiles = new List<Profile>
+            var fakeProjects = new List<Project>
             {
-                new Profile()
+                new Project()
             };
 
             var fakeContext = new Mock<IAuthenticatedVisualStudioIntegrateContext>();
             fakeContext
-                .Setup(x => x.ExecuteAsync(It.IsAny<AuthenticatedRequest<ProfileCollectionDto>>()))
-                .Returns(() => Task.Run(() => new ProfileCollectionDto { Value = fakeProfiles }));
+                .Setup(x => x.ExecuteAsync(It.IsAny<AuthenticatedRequest<ProjectCollectionDto>>()))
+                .Returns(() => Task.Run(() => new ProjectCollectionDto { Value = fakeProjects }));
 
             var target = new ProjectClient();
 
             var actual = await target.GetAuthenicatedClientsProjectsAsync(fakeContext.Object, "Something");
 
-            Assert.AreEqual(fakeProfiles, actual);
+            Assert.AreEqual(fakeProjects, actual);
         }
     }
 }

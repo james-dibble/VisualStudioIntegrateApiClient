@@ -1,7 +1,7 @@
 ﻿namespace VisualStudioIntegreate.Client
 {
     using VisualStudioIntegreate.Client.Authentication;
-    using VisualStudioIntegreate.Client.Profile;
+    using VisualStudioIntegreate.Client.Project;
 
     /// <summary>
     /// Implementing classes define methods for interacting with the 

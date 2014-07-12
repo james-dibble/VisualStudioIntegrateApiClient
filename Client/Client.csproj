@@ -62,7 +62,7 @@
     <Compile Include="Profile\IProfileClient.cs" />
     <Compile Include="Profile\Profile.cs" />
     <Compile Include="Profile\ProfileClient.cs" />
-    <Compile Include="Profile\ProfileCollectionDto.cs" />
+    <Compile Include="Project\ProjectCollectionDto.cs" />
     <Compile Include="Project\IProjectClient.cs" />
     <Compile Include="Project\Project.cs" />
     <Compile Include="Project\ProjectClient.cs" />

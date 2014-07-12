@@ -1,7 +1,11 @@
 ﻿namespace VisualStudioIntegreate.Client.Project
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Net.Http;
     using System.Threading.Tasks;
+    using VisualStudioIntegreate.Client.Project;
 
     /// <summary>
     /// A default implementation of the <see cref="IProjectClient"/> interface.
@@ -14,9 +18,24 @@
         /// <param name="context">The context under which to execute the request.</param>
         /// <param name="account">The Visual Studio Online account to query.</param>
         /// <returns>A collection of <see cref="Project"/> objects.</returns>
-        public Task<IEnumerable<Project>> GetAuthenicatedClientsProjectsAsync(IAuthenticatedVisualStudioIntegrateContext context, string account)
+        public async Task<IEnumerable<Project>> GetAuthenicatedClientsProjectsAsync(IAuthenticatedVisualStudioIntegrateContext context, string account)
         {
-            throw new System.NotImplementedException();
+            Guard.IsNotNull(context, "context", "API Context cannot be null.");
+            Guard.IsNot(account, arg => !string.IsNullOrEmpty(arg), "account", "The VSO account cannot be empty");
+
+            var request = new AuthenticatedRequest<ProjectCollectionDto>
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(
+                    string.Format(
+                        CultureInfo.InvariantCulture,
+                        "https://{0}.visualstudio.com/defaultcollection/_apis/projects?includeCapabilites=true",
+                        account))
+            };
+
+            var container = await context.ExecuteAsync(request);
+
+            return container.Value;
         }
     }
 }

@@ -4,7 +4,7 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
     using VisualStudioIntegreate.Client;
-    using VisualStudioIntegreate.Client.Profile;
+    using VisualStudioIntegreate.Client.Project;
 
     [TestClass]
     public class ProfileClientTests

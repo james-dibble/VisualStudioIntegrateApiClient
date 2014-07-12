@@ -3,7 +3,7 @@
     using System;
 
     using VisualStudioIntegreate.Client.Authentication;
-    using VisualStudioIntegreate.Client.Profile;
+    using VisualStudioIntegreate.Client.Project;
 
     /// <summary>
     /// A default implementation of the <see cref="IVisualStudioIntegrateClient"/> interface.
