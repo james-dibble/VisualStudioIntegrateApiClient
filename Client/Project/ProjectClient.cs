@@ -1,6 +1,7 @@
 ﻿namespace VisualStudioIntegreate.Client.Project
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// A default implementation of the <see cref="IProjectClient"/> interface.
@@ -13,7 +14,7 @@
         /// <param name="context">The context under which to execute the request.</param>
         /// <param name="account">The Visual Studio Online account to query.</param>
         /// <returns>A collection of <see cref="Project"/> objects.</returns>
-        public IEnumerable<Project> GetAuthenicatedClientsProjects(IAuthenticatedVisualStudioIntegrateContext context, string account)
+        public Task<IEnumerable<Project>> GetAuthenicatedClientsProjectsAsync(IAuthenticatedVisualStudioIntegrateContext context, string account)
         {
             throw new System.NotImplementedException();
         }

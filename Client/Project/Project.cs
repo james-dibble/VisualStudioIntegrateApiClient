@@ -33,7 +33,7 @@
         public ProjectCapabilities Capabilities { get; set; }
 
         /// <summary>
-        /// A class represnenting information about the version control used by a Team Project.
+        /// A class representing information about the version control used by a Team Project.
         /// </summary>
         public class VersionControlType
         {
@@ -44,7 +44,7 @@
         }
 
         /// <summary>
-        /// A class representing information about the capabilites of a Team Project.
+        /// A class representing information about the capabilities of a Team Project.
         /// </summary>
         public class ProjectCapabilities
         {

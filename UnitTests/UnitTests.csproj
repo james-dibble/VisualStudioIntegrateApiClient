@@ -66,6 +66,7 @@
     <Compile Include="Authentication\AuthenticationClientTests.cs" />
     <Compile Include="GuardTests.cs" />
     <Compile Include="Profile\ProfileClientTests.cs" />
+    <Compile Include="Project\ProjectClientTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
