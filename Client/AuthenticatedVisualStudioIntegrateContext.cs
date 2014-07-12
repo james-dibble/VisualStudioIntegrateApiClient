@@ -34,8 +34,8 @@
         public async Task<HttpResponseMessage> ExecuteAsync(AuthenticatedRequest request)
         {
             request.Headers.Authorization = new AuthenticationHeaderValue(
-                "Authorization",
-                string.Concat("bearer ", this._accessToken.Token));
+                "bearer",
+                this._accessToken.Token);
 
             return await this.ExecuteAsync(request as Request);
         }
