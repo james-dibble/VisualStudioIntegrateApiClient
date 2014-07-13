@@ -60,5 +60,25 @@ namespace Samples.Mvc.Controllers
                 return this.Json(profile, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public async Task<ActionResult> Projects(string account)
+        {
+            var app =
+                (ConfigurationManager.GetSection("visualStudioIntegrateApplication") as
+                    VisualStudioIntegrateApplicationConfigurationSection).GetApplicationCredentials();
+
+            using (
+                var authenticatedContext =
+                    new AuthenticatedVisualStudioIntegrateContext(this.Session["__token"] as AccessToken, app))
+            {
+                var profile =
+                    await
+                        new VisualStudioIntegrateClient(app).Projects.GetAuthenicatedClientsProjectsAsync(
+                            authenticatedContext,
+                            account);
+
+                return this.Json(profile, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

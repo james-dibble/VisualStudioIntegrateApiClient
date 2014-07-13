@@ -29,7 +29,7 @@
                 RequestUri = new Uri(
                     string.Format(
                         CultureInfo.InvariantCulture,
-                        "https://{0}.visualstudio.com/defaultcollection/_apis/projects?includeCapabilites=true",
+                        "https://{0}.visualstudio.com/defaultcollection/_apis/projects?includeCapabilities=true",
                         account))
             };
 

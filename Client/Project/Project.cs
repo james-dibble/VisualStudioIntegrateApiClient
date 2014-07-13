@@ -31,27 +31,5 @@
         /// Gets or sets the Capabilities of this <see cref="Project"/>.
         /// </summary>
         public ProjectCapabilities Capabilities { get; set; }
-
-        /// <summary>
-        /// A class representing information about the version control used by a Team Project.
-        /// </summary>
-        public class VersionControlType
-        {
-            /// <summary>
-            /// Gets or sets the name of the version control type.
-            /// </summary>
-            public string SourceControlType { get; set; }
-        }
-
-        /// <summary>
-        /// A class representing information about the capabilities of a Team Project.
-        /// </summary>
-        public class ProjectCapabilities
-        {
-            /// <summary>
-            /// Gets or sets the type of version control used by the parent Team Project.
-            /// </summary>
-            public VersionControlType VersionControl { get; set; }
-        }
     }
 }

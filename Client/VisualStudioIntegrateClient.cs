@@ -12,7 +12,8 @@
     {
         private readonly ConsumerApplication _consumerApplication;
         private readonly Lazy<IAuthenticationClient> _authenticationClientInitializer;
-        private readonly Lazy<IProfileClient> _profileClientInitializer; 
+        private readonly Lazy<IProfileClient> _profileClientInitializer;
+        private readonly Lazy<IProjectClient> _projectClientInitializer;
 
         /// <summary>
         /// Initialises a new instance of the <see cref="VisualStudioIntegrateClient"/> class.
@@ -26,6 +27,7 @@
 
             this._authenticationClientInitializer = new Lazy<IAuthenticationClient>(() => new AuthenticationClient(this._consumerApplication));
             this._profileClientInitializer = new Lazy<IProfileClient>(() => new ProfileClient());
+            this._projectClientInitializer = new Lazy<IProjectClient>(() => new ProjectClient());
         }
 
         /// <summary>
@@ -42,6 +44,14 @@
         public IProfileClient Profile
         {
             get { return this._profileClientInitializer.Value; }
+        }
+
+        /// <summary>
+        /// Gets methods for retrieving Team Project information.
+        /// </summary>
+        public IProjectClient Projects
+        {
+            get { return this._projectClientInitializer.Value; }
         }
     }
 }

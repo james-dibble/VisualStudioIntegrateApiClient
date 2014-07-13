@@ -18,5 +18,10 @@
         /// Gets methods for retrieving profile information.
         /// </summary>
         IProfileClient Profile { get; }
+
+        /// <summary>
+        /// Gets methods for retrieving Team Project information.
+        /// </summary>
+        IProjectClient Projects { get; }
     }
 }
